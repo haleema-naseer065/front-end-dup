@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "Frontend2",
+    "slug": "Frontend2",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/adaptive-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.haleema065.Frontend2"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android_adaptive_foreground.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.haleema065.Frontend2",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "INTERNET",
+        "MODIFY_AUDIO_SETTINGS",
+        "READ_EXTERNAL_STORAGE",
+        "RECORD_AUDIO",
+        "SYSTEM_ALERT_WINDOW",
+        "VIBRATE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+        }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fb694d9b-075d-4592-b54b-1c74e5fecf8b"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "minSdkVersion": 21,
+            "buildToolsVersion": "33.0.0",
+            "enableJetifier": true,
+            "extraProguardRules": "-dontwarn android.support.**",
+            "dependencies": {
+              "androidx.core:core": "1.13.1"
+            }
+          }
+        }
+      ]
+    ]
+  }
+}
