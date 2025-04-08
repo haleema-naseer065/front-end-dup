@@ -63,6 +63,8 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, GestureResponderEvent } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { store } from '../redux/store';
+import { logout } from '../redux/slice/userSlice';
 
 const { width, height } = Dimensions.get('window');
 
@@ -88,7 +90,6 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 }) => {
   return (
     <View style={[styles.headerContainer, containerStyle]}>
-      {/* Left Icons */}
       <View style={styles.iconGroup}>
         {leftIcons.map((icon, index) => (
           <MaterialIcons
@@ -102,18 +103,30 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
         ))}
       </View>
 
-      {/* Right Icons */}
       <View style={styles.iconGroup}>
-        {rightIcons.map((icon, index) => (
-          <MaterialIcons
-            key={`right-icon-${index}`}
-            name={icon.name}
-            size={width * 0.08}
-            color="#20432E"
-            style={[styles.icon, icon.style]}
-            onPress={icon.onPress}
-          />
-        ))}
+      {rightIcons.map((icon, index) => {
+  const handleIconPress = (event: GestureResponderEvent) => {
+    if (icon.name === "exit-to-app") {
+      console.log("Logging out...");
+      store.dispatch(logout())
+    }
+
+
+    icon.onPress?.(event);
+  };
+
+  return (
+    <MaterialIcons
+      key={`right-icon-${index}`}
+      name={icon.name}
+      size={width * 0.08}
+      color="#20432E"
+      style={[styles.icon, icon.style]}
+      onPress={handleIconPress}
+    />
+  );
+})}
+
       </View>
     </View>
   );
