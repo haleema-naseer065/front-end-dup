@@ -86,13 +86,13 @@ const LoginScreen = () => {
         const role = decoded.role;
 
         console.log("Login successful:", decoded);
-        store.dispatch(login({ token }));
+        store.dispatch(login({token: token, userData:decoded }));
 
         // Navigate based on role
         if (role === "admin") {
           navigation.replace("AdminScreen");
         } else {
-          navigation.replace("Home");
+          // navigation.replace("Home");
         }
       } else {
         Alert.alert("Login Error", "Something went wrong");
