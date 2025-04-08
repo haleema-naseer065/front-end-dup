@@ -32,14 +32,17 @@ import { RootState } from '../redux/store';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const {isAuthenticated,user}:any = useSelector((state: RootState) => state.auth);
 
+  // console.log('user dat',user.userData)
   return (
     <Stack.Navigator initialRouteName="LandingScreenAfterSplash">
-      
+      <Stack.Screen name='LandingScreenAfterSplash' component={!isAuthenticated?LandingScreenAfterSplash: user?.userData?.role ==='admin' ? AdminScreen:HomeScreen} options={{ headerShown: false }}/>
       
       {!isAuthenticated && (
         <>
+
+        
           <Stack.Screen name="StartSignup" component={StartSignup} options={{ headerShown: false }} />
           <Stack.Screen name="SignupVerify" component={SignupVerify} options={{ headerShown: false }} />
           <Stack.Screen name="SignupPin" component={SignupPin} options={{ headerShown: false }} />
@@ -50,17 +53,15 @@ const StackNavigator = () => {
 
       {isAuthenticated && (
         <>
+        <Stack.Screen name="Home" component={HomeScreen} />
+<Stack.Screen name="AdminScreen" component={AdminScreen} />
+
           
-          <Stack.Screen name="AdminScreen" component={AdminScreen} options={{ headerShown: false }} />
           <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity1" component={UsersActivity1} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity2" component={UsersActivity2} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
           <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-        </>
-      )}
-
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Tutorial" component={TutorialScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
       <Stack.Screen name="MaizeTypes" component={MaizeTypes} options={{ headerShown: false }} />
@@ -72,6 +73,10 @@ const StackNavigator = () => {
       <Stack.Screen name="FertilizersRecommendation" component={FertilizersRecommendation} options={{ headerShown: false }} />
       <Stack.Screen name="ResultsScreen" component={ResultsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ViewHistoryActivity" component={ViewHistoryActivity} options={{ headerShown: false }} />
+
+        </>
+      )}
+
     </Stack.Navigator>
   );
 };
