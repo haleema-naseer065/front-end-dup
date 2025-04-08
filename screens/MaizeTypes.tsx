@@ -152,8 +152,6 @@ import HeaderComponent from '../components/header';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import NitroTrackContainer from '../components/NitrotrackandCornImage'; // Import the new component
-import { store } from '../redux/store';
-import { logout } from '../redux/slice/userSlice';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -169,7 +167,7 @@ const MaizeTypes = () => {
           { name: 'home', onPress: () => navigation.navigate('BottomTabNavigator') },
           { name: 'help-outline', onPress: () =>navigation.navigate('Tutorial') },
           { name: 'volume-up', onPress: () => console.log('Volume pressed') },
-          { name: 'exit-to-app', onPress: () => { store.dispatch(logout())} },
+          { name: 'exit-to-app', onPress: () => navigation.navigate('StartLogin') },
         ]}
         leftIcons={[
           { name: 'arrow-back', onPress: () => navigation.goBack() },

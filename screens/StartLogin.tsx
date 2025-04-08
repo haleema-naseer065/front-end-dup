@@ -17,9 +17,6 @@ import Card from "../components/Card";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
-import axios from "axios";
-import { store } from "../redux/store";
-import { login } from "../redux/slice/userSlice";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
@@ -77,33 +74,21 @@ const LoginScreen = () => {
     }
   };
 
-  const handleLogin = async () => {
-    // First, validate PIN
-    if (pin.some((digit) => digit === "")) {
-      Alert.alert("براہ کرم 4 ہندسوں کا پن کوڈ درج کریں۔");
+  const handleLogin = () => {
+    // Check if phone number and PIN are valid
+    if (phoneNumber.length !== 10) {
+      Alert.alert( "براہ کرم ایک درست 10 ہندسوں کا فون نمبر درج کریں۔");
       return;
     }
-  
-    try {
-      const payload = {
-        phoneNumber: "+92" + phoneNumber,
-        pin: pin.join(''),
-      };
-    
-      const response:any = await axios.post(
-        "https://benitrotrack-production.up.railway.app/api/sign-in",
-        payload
-      );
-  
-      console.log("Login successful:", response.data);
-      store.dispatch(login({token:response?.data?.token}))
-      navigation.replace("AdminorUserScreen");
-    } catch (error: any) {
-      console.error("Login error:", error);
-      Alert.alert("لاگ ان ناکام۔ براہ کرم فون نمبر اور پن دوبارہ چیک کریں۔");
+
+    if (pin.some((digit) => digit === "")) {
+      Alert.alert( "براہ کرم 4 ہندسوں کا پن کوڈ درج کریں۔");
+      return;
     }
+
+    // If both phone number and PIN are valid, navigate to the next screen
+    navigation.replace("AdminorUserScreen");
   };
-  
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();

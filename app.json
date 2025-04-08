@@ -17,7 +17,6 @@
       "bundleIdentifier": "com.haleema065.Frontend2"
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/android_adaptive_foreground.png",
         "backgroundColor": "#ffffff"
@@ -61,9 +60,7 @@
             }
           }
         }
-      ],
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth"
+      ]
     ]
   }
 }

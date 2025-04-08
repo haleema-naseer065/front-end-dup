@@ -12,10 +12,9 @@ import {
 } from 'react-native';
 import Card from '../components/Card'; // Adjust the path to your Card component
 import { MaterialIcons } from '@expo/vector-icons'; // Import Material Icons
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import axios, { AxiosError } from 'axios';
 
 // Define the type for navigation prop
 type SignupNameNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -24,32 +23,19 @@ type SignupNameNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 const { width, height } = Dimensions.get('window');
 
 const SignupName = () => {
-  const route = useRoute<RouteProp<RootStackParamList,'SignupName'>>(); 
-  const { phoneNumber, pin } = route.params; 
   const navigation = useNavigation<SignupNameNavigationProp>();
   const [name, setName] = useState('');
 
-  const handleSignup = async () => {
+  const handleSignup = () => {
+    // Check if the name field is empty
     if (!name.trim()) {
-      alert('براہ کرم اپنا نام درج کریں۔');
+      alert('براہ کرم اپنا نام درج کریں۔'); // Show an alert if name is empty
       return;
     }
-  
-    try {
-      const response = await axios.post("https://benitrotrack-production.up.railway.app/api/sign-up", {
-        phoneNumber: phoneNumber,
-        pin: pin,
-        name: name,
-      });
-  
-      console.log('Signup response:', response.data);
-      navigation.navigate('StartLogin');
-    } catch (error:any) {
-      console.error('Signup error:', error.response?.data);
-      alert('رجسٹریشن ناکام ہو گئی۔ براہ کرم دوبارہ کوشش کریں۔');
-    }
+
+    console.log('Name entered:', name);
+    navigation.navigate('StartLogin'); // Navigate to the HomeScreen
   };
-  
 
   return (
     <KeyboardAvoidingView
@@ -85,9 +71,12 @@ const SignupName = () => {
           style={styles.cardStyle} // Add extra styling if needed
           topIcon={<MaterialIcons name="person" size={50} color="#FFFFFF" />} // Add the person icon here
         >
+          {/* Bottom Section */}
           <View style={styles.bottomSection}>
+            {/* Text: اپنا نام درج کریں */}
             <Text style={styles.promptText}>اپنا نام درج کریں</Text>
 
+            {/* TextInput for name */}
             <TextInput
               style={styles.textInput}
               placeholder="محمد اکرم"
@@ -96,6 +85,7 @@ const SignupName = () => {
               onChangeText={setName}
             />
 
+            {/* Submit button */}
             <TouchableOpacity style={styles.button} onPress={handleSignup}>
               <Text style={styles.buttonText}>سائن اپ</Text>
             </TouchableOpacity>

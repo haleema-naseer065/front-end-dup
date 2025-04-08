@@ -12,21 +12,18 @@ import {
   Keyboard,
 } from 'react-native';
 import Card from '../components/Card';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type SignupVerify = StackNavigationProp<RootStackParamList, 'Home'>;
-type SignupVerifyRouteProp = RouteProp<RootStackParamList, 'SignupVerify'>;
 
 const { width, height } = Dimensions.get('window');
 
 const SignupVerify: React.FC = () => {
   const navigation = useNavigation<SignupVerify>();
-  const route = useRoute<SignupVerifyRouteProp>();
-  const { confirmation, phoneNumber } = route.params;
-
-  const [code, setCode] = useState(['', '', '', '', '', '']);
+  const [code, setCode] = useState(['', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
   const handleCodeChange = (text: string, index: number) => {
@@ -68,7 +65,7 @@ const SignupVerify: React.FC = () => {
         <View style={styles.innerContainer}>
           <Card
             height={height * 0.35} // Dynamically set card height
-            width="90%"
+            width="80%"
             backgroundColorTop="#3A5F47"
             backgroundColorBottom="#FFFFFF"
             borderRadius={15}
@@ -95,26 +92,14 @@ const SignupVerify: React.FC = () => {
 
             <TouchableOpacity
               style={[styles.submitButton, { width: width * 0.3, height: height * 0.06 }]} // Responsive button size
-              onPress={async () => {
-                if (code.length !== 6 || code.some((digit) => digit === '')) {
-                  alert('براہ کرم مکمل کوڈ درج کریں۔');
+              onPress={() => {
+                // Validate that all 4 digits are entered
+                if (code.some((digit) => digit === '')) {
+                  alert('براہ کرم مکمل کوڈ درج کریں۔'); // Display an alert in Urdu
                   return;
                 }
-              
-                const otpCode = code.join(''); // Combine all 4 digits into a single string
-              
-                try {
-                  const result = await confirmation.confirm(otpCode);
-                  alert(`توثیق کامیاب! خوش آمدید: ${result.user.phoneNumber}`);
-                  navigation.navigate('SignupPin',{
-                    phoneNumber: phoneNumber,
-                  });
-                } catch (error) {
-                  console.error('OTP verification failed:', error);
-                  alert('غلط کوڈ۔ براہ کرم دوبارہ کوشش کریں۔');
-                }
+                navigation.navigate('SignupPin'); // Navigate to the next screen if valid
               }}
-              
             >
               <Text style={styles.submitButtonText}>→</Text>
             </TouchableOpacity>
