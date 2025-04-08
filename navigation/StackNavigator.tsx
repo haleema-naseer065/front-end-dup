@@ -20,7 +20,7 @@ import SignupVerify from '../screens/SignupVerify';
 import SignupPin from '../screens/SignupPin';
 import SignupName from '../screens/SignupName';
 import EditProfile from '../screens/EditProfile';
-import AdminorUserScreen from '../screens/AdminorUserScreen';
+//import AdminorUserScreen from '../screens/AdminorUserScreen';
 import AdminScreen from '../screens/AdminScreen';
 import RegisteredUsersScreen from '../screens/RegisteredUsersScreen';
 import UsersActivity1 from '../screens/UsersActivity1';
@@ -36,7 +36,7 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator initialRouteName="LandingScreenAfterSplash">
-      <Stack.Screen name="LandingScreenAfterSplash" component={ !isAuthenticated?LandingScreenAfterSplash:AdminorUserScreen} options={{ headerShown: false }} />
+      
       
       {!isAuthenticated && (
         <>
@@ -50,7 +50,7 @@ const StackNavigator = () => {
 
       {isAuthenticated && (
         <>
-          <Stack.Screen name="AdminorUserScreen" component={AdminorUserScreen} options={{ headerShown: false }} />
+          
           <Stack.Screen name="AdminScreen" component={AdminScreen} options={{ headerShown: false }} />
           <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity1" component={UsersActivity1} options={{ headerShown: false }} />

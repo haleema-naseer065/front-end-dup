@@ -27,7 +27,7 @@ const TutorialScreen = () => {
             <Video
               ref={video}
               style={styles.video}
-              source={require('../assets/videos/tutorial.mp4')}
+              //source={require('../assets/videos/tutorial.mp4')}
               useNativeControls
               resizeMode={ResizeMode.CONTAIN}
               isLooping

@@ -23,7 +23,7 @@ export type RootStackParamList = {
     Results: undefined;
     ResultsScreen:undefined,
     EditProfile: undefined;
-    AdminorUserScreen: undefined;
+    //AdminorUserScreen: undefined;
     AdminScreen: undefined;
     RegisteredUsersScreen: undefined;
     UsersActivity1:undefined;
