@@ -40,6 +40,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppSplashScreen from './screens/splashscreen'; // Import your splash screen
 import BottomTabNavigator from './navigation/BottomTabNavigator'; // Use BottomTabNavigator
 import StackNavigator from './navigation/StackNavigator';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { persistor, store } from './redux/store';
 
 // Define the App component with TypeScript
 const App: React.FC = () => {
@@ -56,9 +59,17 @@ const App: React.FC = () => {
   }, []);
 
   return (
+    <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+
+
     <NavigationContainer>
       {isSplashVisible ? <AppSplashScreen /> : <StackNavigator />}
     </NavigationContainer>
+
+    </PersistGate>
+    </Provider>
+
   );
 };
 

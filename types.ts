@@ -17,9 +17,9 @@ export type RootStackParamList = {
     FertilizersRecommendation: undefined;
     NitrogenDetail: undefined;
     ViewResults: undefined;
-    SignupVerify:undefined;
-    SignupName:undefined;
-    SignupPin:undefined;
+    SignupVerify: { confirmation: any; phoneNumber: string };
+    SignupName:{phoneNumber:string,pin:string};
+    SignupPin:{phoneNumber:string};
     Results: undefined;
     ResultsScreen:undefined,
     EditProfile: undefined;
