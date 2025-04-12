@@ -24,7 +24,7 @@ const TutorialScreen = () => {
             </Text>
           </View>
           <View style={styles.videoContainer}>
-            <Video
+            {/* <Video
               ref={video}
               style={styles.video}
               source={require('../assets/videos/tutorial.mp4')}
@@ -33,7 +33,7 @@ const TutorialScreen = () => {
               isLooping
               shouldPlay={false}
               onPlaybackStatusUpdate={setStatus}
-            />
+            /> */}
           </View>
         </View>
 
