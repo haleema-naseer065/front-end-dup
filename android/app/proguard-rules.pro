@@ -12,7 +12,3 @@
 -keep class com.facebook.react.turbomodule.** { *; }
 
 # Add any project specific keep options here:
-
-# @generated begin expo-build-properties - expo prebuild (DO NOT MODIFY)
--dontwarn android.support.**
-# @generated end expo-build-properties

@@ -59,6 +59,39 @@ const SignupVerify: React.FC = () => {
   //   console.log('Speaker icon pressed');
   // };
 
+  // Somewhere in your component:
+const handleConfirmCode = async () => {
+  // 1. Ensure all 6 digits are present
+  if (code.length !== 6 || code.some((digit) => digit.trim() === '')) {
+    alert('براہ کرم مکمل کوڈ درج کریں۔');
+    return;
+  }
+
+  // 2. Combine into one string
+  const otpCode = code.join('');
+
+  try {
+    // 3. Verify with Firebase
+    const result = await confirmation.confirm(otpCode);
+    console.log('result',result)
+    // 4. Success alert
+    alert(
+      '      `توثیق کامیاب! خوش آمدید: ${result.user?.phoneNumber}`کامیابی',
+    );
+
+    // 5. Navigate to the next screen
+    navigation.navigate('SignupPin', {
+      phoneNumber: phoneNumber, // or fullPhone if you stored that
+    });
+  } catch (error) {
+    console.error('OTP verification failed:', error);
+    alert('غلط کوڈ۔ براہ کرم دوبارہ کوشش کریں۔');
+  }
+};
+
+// In your JSX, wire it up:
+
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined} // Avoids the keyboard from covering inputs on iOS
@@ -94,26 +127,30 @@ const SignupVerify: React.FC = () => {
             <Text style={styles.resendText}>کوڈ ایس ایم ایس پر دوبارہ بھیجیں</Text>
 
             <TouchableOpacity
-              style={[styles.submitButton, { width: width * 0.3, height: height * 0.06 }]} // Responsive button size
-              onPress={async () => {
-                if (code.length !== 6 || code.some((digit) => digit === '')) {
-                  alert('براہ کرم مکمل کوڈ درج کریں۔');
-                  return;
-                }
+              style={[styles.submitButton, { width: width * 0.3, height: height * 0.06 }]}
+              onPress={handleConfirmCode}
+              // Responsive button size
+              // onPress={async () => {
+              //   if (code.length !== 6 || code.some((digit) => digit === '')) {
+              //     alert('براہ کرم مکمل کوڈ درج کریں۔');
+              //     return;
+              //   }
               
-                const otpCode = code.join(''); // Combine all 4 digits into a single string
+              //   const otpCode = code.join(''); // Combine all 4 digits into a single string
               
-                try {
-                  const result = await confirmation.confirm(otpCode);
-                  alert(`توثیق کامیاب! خوش آمدید: ${result.user.phoneNumber}`);
-                  navigation.navigate('SignupPin',{
-                    phoneNumber: phoneNumber,
-                  });
-                } catch (error) {
-                  console.error('OTP verification failed:', error);
-                  alert('غلط کوڈ۔ براہ کرم دوبارہ کوشش کریں۔');
-                }
-              }}
+              //   try {
+              //     const result = await confirmation.confirm(otpCode);
+              //     alert(`توثیق کامیاب! خوش آمدید: ${result.user.phoneNumber}`);
+              //     navigation.navigate('SignupPin',{
+              //       phoneNumber: phoneNumber,
+              //     });
+              //   } catch (error) {
+              //     console.error('OTP verification failed:', error);
+              //     alert('غلط کوڈ۔ براہ کرم دوبارہ کوشش کریں۔');
+              //   }
+              // }}
+
+
               
             >
               <Text style={styles.submitButtonText}>→</Text>

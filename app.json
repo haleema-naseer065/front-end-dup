@@ -2,19 +2,20 @@
   "expo": {
     "name": "Frontend2",
     "slug": "Frontend2",
+    "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": false,
     "splash": {
       "image": "./assets/adaptive-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.haleema065.Frontend2"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.haleema065.Frontend2",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -44,26 +45,6 @@
       "eas": {
         "projectId": "fb694d9b-075d-4592-b54b-1c74e5fecf8b"
       }
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "minSdkVersion": 21,
-            "buildToolsVersion": "33.0.0",
-            "enableJetifier": true,
-            "extraProguardRules": "-dontwarn android.support.**",
-            "dependencies": {
-              "androidx.core:core": "1.13.1"
-            }
-          }
-        }
-      ],
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth"
-    ]
+    }
   }
 }

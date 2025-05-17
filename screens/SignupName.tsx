@@ -36,7 +36,7 @@ const SignupName = () => {
     }
   
     try {
-      const response = await axios.post("https://benitrotrack-production.up.railway.app/api/sign-up", {
+      const response = await axios.post("https://web-production-d02c.up.railway.app/api/sign-up", {
         phoneNumber: phoneNumber,
         pin: pin,
         name: name,
