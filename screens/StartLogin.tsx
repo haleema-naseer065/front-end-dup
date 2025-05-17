@@ -151,7 +151,9 @@ const LoginScreen = () => {
                   style={styles.pinBox}
                   maxLength={1}
                   keyboardType="number-pad"
-                  ref={(ref) => (pinRefs.current[index] = ref)}
+                  ref={(ref) => {
+                                  pinRefs.current[index] = ref;
+                                }}
                   onChangeText={(text) => /^[0-9]$/.test(text) && handlePinChange(text, index)}
                   onKeyPress={({ nativeEvent }) => handleKeyPress(nativeEvent.key, index)}
                   contextMenuHidden={true} // Disable context menu
