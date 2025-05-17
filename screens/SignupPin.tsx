@@ -78,7 +78,9 @@ const SignupPin = () => {
             {pin.map((digit, index) => (
               <TextInput
                 key={index}
-                ref={(ref) => (inputs.current[index] = ref)}
+                ref={(ref) => {
+                                inputs.current[index] = ref;
+                              }}
                 style={styles.pinInput}
                 maxLength={1}
                 keyboardType="number-pad"
