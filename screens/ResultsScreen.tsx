@@ -1,74 +1,77 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../types';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
 
-type ResultsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Results'>;
+type ResultsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ResultsScreen'>;
+type ResultsScreenRouteProp = RouteProp<RootStackParamList, 'ResultsScreen'>;
 
 const ResultScreen = () => {
-  const navigation = useNavigation<ResultsScreenNavigationProp>();
-// const ResultScreen = () => {
-  // Static data
-  const resultData = {
-    NR: 1.02,
-    FNDVI: 0.58,
-    TNDVI: 0.53,
-    RI: 1.08,
-    nextCheckDate: 'Feb-5-2025',
-    fertilizers: {
-      urea: 2.23,
-      ammoniumSulfate: 4.88,
-      calciumAmmoniumNitrate: 3.94
-    }
-  };
+  const navigation = useNavigation<any>();
+  const route = useRoute<ResultsScreenRouteProp>();
 
-  const cropImage = require('../assets/images/sample.jpg'); // You'll need to add your own image
+  const {
+    spad_index,
+    nitrogen_required_kg_per_acre,
+    urea_kg,
+    CAN_kg,
+    ammonium_sulphate_kg,
+    test_leaf_segmented,
+    message,
+  } = route.params;
 
+  const isTooHigh = spad_index > 95;
+const format = (value: number | undefined) => 
+  typeof value === 'number' ? value.toFixed(2) : '0.00';
+
+  console.log('spad',spad_index)
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.headerTitle}>
-          Nitrogen App (نائٹروجن ایپ)
-        </Text>
+        <Text style={styles.headerTitle}>Nitrogen App (نائٹروجن ایپ)</Text>
 
-        <Text style={styles.mainHeading}>
-          تصویر اور نتائج درج ذیل ہیں
-        </Text>
+        {isTooHigh ? (
+          <Text style={styles.mainHeading}>{message}</Text>
+        ) : (
+          <>
+            <Text style={styles.mainHeading}>تصویر اور نتائج درج ذیل ہیں</Text>
 
-        <View style={styles.resultContainer}>
-          <View style={styles.metricsContainer}>
-            <Text style={styles.metric}>NR: {resultData.NR} kg/acre</Text>
-            <Text style={styles.metric}>FNDVI: {resultData.FNDVI}</Text>
-            <Text style={styles.metric}>TNDVI: {resultData.TNDVI}</Text>
-            <Text style={styles.metric}>RI: {resultData.RI}</Text>
-          </View>
-          
-          <Image 
-            source={cropImage}
-            style={styles.cropImage}
-          />
-        </View>
+            <View style={styles.resultContainer}>
+              <View style={styles.metricsContainer}>
+                <Text style={styles.metric}>SPAD Index: {spad_index}</Text>
+                <Text style={styles.metric}>
+                  نائٹروجن درکار: {nitrogen_required_kg_per_acre} کلوگرام فی ایکڑ
+                </Text>
+              </View>
 
-        <View style={styles.fertilizerSection}>
-          <Text style={styles.fertilizerHeading}>
-            آپ اپنی گندم کی فصل کو مندرجہ ذیل کھادوں میں سے کوئی بھی کھاد ڈال سکتے ہیں
-          </Text>
-          
-          <Text style={styles.fertilizerDetails}>
-            {`یوریا ${resultData.fertilizers.urea} کلوگرام فی ایکڑ    یا\n`}
-            {`ایمونیم سلفیٹ ${resultData.fertilizers.ammoniumSulfate} کلوگرام فی ایکڑ    یا\n`}
-            {`کیلشیم ایمونیم نائٹریٹ ${resultData.fertilizers.calciumAmmoniumNitrate} کلوگرام فی ایکڑ`}
-          </Text>
-        </View>
+              <Image
+                source={{ uri: `data:image/jpeg;base64,${test_leaf_segmented}` }}
+                style={styles.cropImage}
+              />
+            </View>
 
-        <Text style={styles.nextCheckText}>
-          {`اپنی فصل کا ${resultData.nextCheckDate} کو نائٹروجن ایپ سے دوبارہ معائنہ کریں اور کھاد کی اگلی قسط ڈالیں۔`}
-        </Text>
+            <View style={styles.fertilizerSection}>
+              <Text style={styles.fertilizerHeading}>
+                آپ اپنی گندم کی فصل کو مندرجہ ذیل کھادوں میں سے کوئی بھی کھاد ڈال سکتے ہیں
+              </Text>
 
-        <TouchableOpacity 
+              <Text style={styles.fertilizerDetails}>
+                {`یوریا ${urea_kg.toFixed(2)} کلوگرام فی ایکڑ    یا\n`}
+                {`ایمونیم سلفیٹ ${ammonium_sulphate_kg.toFixed(2)} کلوگرام فی ایکڑ    یا\n`}
+                {`کیلشیم ایمونیم نائٹریٹ ${CAN_kg.toFixed(2)} کلوگرام فی ایکڑ`}
+              </Text>
+            </View>
+
+            <Text style={styles.nextCheckText}>
+              اپنی فصل کا چند دن بعد نائٹروجن ایپ سے دوبارہ معائنہ کریں اور کھاد کی اگلی قسط ڈالیں۔
+            </Text>
+          </>
+        )}
+
+        <TouchableOpacity
           style={styles.restartButton}
-          onPress={() => navigation.navigate("BottomTabNavigator")}
+          onPress={() => navigation.navigate('BottomTabNavigator')}
         >
           <Text style={styles.restartButtonText}>دوبارہ شروع کریں</Text>
         </TouchableOpacity>
@@ -78,13 +81,8 @@ const ResultScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollContent: {
-    padding: 16,
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
+  scrollContent: { padding: 16 },
   headerTitle: {
     fontSize: 24,
     color: '#2E7D32',
@@ -93,10 +91,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   mainHeading: {
-    fontSize: 28,
+    fontSize: 24,
     textAlign: 'center',
     color: '#2E7D32',
     marginBottom: 24,
+    fontWeight: '700',
   },
   resultContainer: {
     flexDirection: 'row',
@@ -104,9 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  metricsContainer: {
-    flex: 1,
-  },
+  metricsContainer: { flex: 1 },
   metric: {
     fontSize: 16,
     marginBottom: 8,
@@ -117,10 +114,9 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 8,
+    marginLeft: 10,
   },
-  fertilizerSection: {
-    marginBottom: 24,
-  },
+  fertilizerSection: { marginBottom: 24 },
   fertilizerHeading: {
     fontSize: 20,
     textAlign: 'right',

@@ -27,7 +27,16 @@ export type RootStackParamList = {
     SignupName: { phoneNumber: string; pin: string;confirmPin: string};
     SignupPin:{phoneNumber:string};
     Results: undefined;
-    ResultsScreen:undefined,
+    ResultsScreen:{
+        spad_index: number;
+  nitrogen_required_kg_per_acre: number;
+  urea_kg: number;
+  CAN_kg: number;
+  ammonium_sulphate_kg: number;
+  test_leaf_segmented: string;
+  message:string;
+
+    },
     EditProfile: undefined;
     AdminorUserScreen: undefined;
     AdminScreen: undefined;

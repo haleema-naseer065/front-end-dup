@@ -42,19 +42,35 @@ const uploadImage = async ({
   formData.append('crop_id', maizeType.toString());
 
   try {
-    const response = await axios.post(
+    const {data} = await axios.post(
       'https://web-production-d02c.up.railway.app/upload/',
       formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          // Do NOT set Content-Type manually!
+          Accept: 'application/json',
+          "Content-Type":'multipart/form-data' 
         },
       }
     );
-
-    console.log('✅ Upload success:', response.data);
-    return response.data;
+    console.log('res',data?.result)
+ 
+    if(data?.result){
+      alert(data.result)
+      navigation.goBack()
+      return
+    }
+    navigation.replace('ResultsScreen',{
+       spad_index: data?.spad_index,
+      nitrogen_required_kg_per_acre: data?.nitrogen_required_kg_per_acre,
+      urea_kg:data?.urea_kg,
+      CAN_kg: data?.CAN_kg,
+      ammonium_sulphate_kg: data?.ammonium_sulphate_kg,
+      test_leaf_segmented: data?.test_leaf_segmented,
+      message: data?.message,
+ 
+    }); // Use replace instead of navigate
+    // return data;
   } catch (err: any) {
     console.error('❌ Upload failed:', {
       status: err?.response?.status,
@@ -62,12 +78,14 @@ const uploadImage = async ({
       message: err.message,
     });
 
+
     Alert.alert(
       'اپ لوڈ ناکام',
       err?.response?.status === 500
         ? 'سرور کی خرابی۔ براہ کرم بعد میں کوشش کریں۔'
         : 'تصویر بھیجنے میں مسئلہ پیش آیا۔'
     )
+    navigation.goBack()
   }finally{
       setIsLoading(false)
     }
