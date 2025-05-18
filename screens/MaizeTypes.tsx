@@ -187,13 +187,13 @@ const MaizeTypes = () => {
        
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('imageselection')}
+          onPress={() => navigation.navigate('imageselection',{crop_id:0})}
         >
           <Text style={styles.buttonText}>سادہ</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('imageselection')}
+          onPress={() => navigation.navigate('imageselection',{crop_id:1})}
         >
           <Text style={styles.buttonText}>ہائبرڈ</Text>
         </TouchableOpacity>
