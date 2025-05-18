@@ -21,6 +21,7 @@ import axios from "axios";
 import { store } from "../redux/store";
 import { login } from "../redux/slice/userSlice";
 import { jwtDecode } from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
@@ -98,6 +99,10 @@ const handleLogin = async () => {
     const token = response?.data?.token;
     console.log("Login successful:", token);
 
+    await AsyncStorage.setItem('token', token); // ✅ Save token to AsyncStorage
+    const savedToken = await AsyncStorage.getItem('token');
+    console.log("Saved Token from AsyncStorage:", savedToken);
+
     const decoded: any = jwtDecode(token);
     console.log("Decoded JWT:", decoded);
 
@@ -166,7 +171,11 @@ const handleLogin = async () => {
                   style={styles.pinBox}
                   maxLength={1}
                   keyboardType="number-pad"
-                  ref={(ref) => (pinRefs.current[index] = ref)}
+                  ref={(ref) => {
+                                  if (ref) {
+                                  pinRefs.current[index] = ref;
+                                           }
+                                }}
                   onChangeText={(text) => /^[0-9]$/.test(text) && handlePinChange(text, index)}
                   onKeyPress={({ nativeEvent }) => handleKeyPress(nativeEvent.key, index)}
                   contextMenuHidden={true} // Disable context menu

@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type EditProfileNavigationProp = StackNavigationProp<RootStackParamList, 'EditProfile'>;
 
@@ -36,7 +37,8 @@ interface ImageOption {
 
 const { width, height } = Dimensions.get('window'); // Get screen width and height
 
-const UpdateProfileScreen: React.FC = () => {
+// Changed the component name to match the export and the name used in StackNavigator
+const EditProfile: React.FC = () => {
   const navigation = useNavigation<EditProfileNavigationProp>();
   const [profileData, setProfileData] = useState<ProfileData>({
     name: '',
@@ -45,6 +47,42 @@ const UpdateProfileScreen: React.FC = () => {
   });
   const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Fetch existing profile data when component mounts
+  React.useEffect(() => {
+    fetchProfileData();
+  }, []);
+  
+  const fetchProfileData = async () => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem('token');
+      
+      if (!token) {
+        return;
+      }
+      
+      const response = await fetch('https://web-production-f3500.up.railway.app/profile/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setProfileData({
+          name: data.name || '',
+          phone: data.phone_number || '',
+          profilePic: data.profile_picture || null
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const requestPermission = async () => {
     if (Platform.OS !== 'web') {
@@ -92,19 +130,63 @@ const UpdateProfileScreen: React.FC = () => {
     }
   };
 
-  const handleUpdateProfile = () => {
-    Alert.alert(
-      'کامیابی',
-      'اکاؤنٹ کی تفصیلات کامیابی سے تبدیل ہو گئی ہیں',
-      [
-        {
-          text: 'ٹھیک ہے',
-          onPress: () => navigation.navigate('BottomTabNavigator')
-        }
-      ],
-      { cancelable: false }
-    );
-  };
+  
+const handleUpdateProfile = async () => {
+  const { name, phone } = profileData;
+
+  // Check if at least one field has been filled
+  if (!name.trim() && !phone.trim()) {
+    Alert.alert('خرابی', 'براہ کرم کم از کم ایک فیلڈ پر کریں');
+    return;
+  }
+
+  try {
+    const token = await AsyncStorage.getItem('token');
+
+    if (!token) {
+      Alert.alert('خرابی', 'صارف کا سیشن ختم ہو گیا ہے۔ دوبارہ لاگ ان کریں۔');
+      return;
+    }
+
+    // Only include fields that have values in the request body
+    const requestBody: any = {};
+    
+    if (name.trim()) {
+      requestBody.name = name.trim();
+    }
+    
+    if (phone.trim()) {
+      requestBody.new_phone_number = phone.trim();
+    }
+
+    const response = await fetch('https://web-production-f3500.up.railway.app/profile/edit/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      Alert.alert(
+        'کامیابی',
+        'اکاؤنٹ کی تفصیلات کامیابی سے تبدیل ہو گئی ہیں',
+        [{ text: 'ٹھیک ہے', onPress: () => navigation.navigate('BottomTabNavigator') }],
+        { cancelable: false }
+      );
+    } else {
+      Alert.alert('خرابی', data.error || 'پروفائل اپڈیٹ ناکام');
+    }
+
+  } catch (error) {
+    console.error("Update Error:", error);
+    Alert.alert('خرابی', 'سرور سے جڑنے میں ناکامی');
+  }
+};
+
 
   const imageOptions: ImageOption[] = [
     {
@@ -175,6 +257,7 @@ const UpdateProfileScreen: React.FC = () => {
                   placeholderTextColor="#9CA3AF"
                   textAlign="right"
                 />
+                <Text style={styles.helperText}>نام بدلنے کے لیے دوبارہ درج کریں</Text>
               </View>
 
               <View style={styles.inputContainer}>
@@ -188,6 +271,7 @@ const UpdateProfileScreen: React.FC = () => {
                   keyboardType="phone-pad"
                   textAlign="right"
                 />
+                <Text style={styles.helperText}>فون نمبر بدلنے کے لیے دوبارہ درج کریں</Text>
               </View>
 
               <TouchableOpacity
@@ -198,6 +282,14 @@ const UpdateProfileScreen: React.FC = () => {
                 <Text style={styles.updateButtonText}>
                   {loading ? 'برائے مہربانی انتظار کریں...' : 'پروفائل اپڈیٹ کریں'}
                 </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => navigation.goBack()}
+                disabled={loading}
+              >
+                <Text style={styles.cancelButtonText}>واپس جائیں</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -341,18 +433,38 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     color: '#1F2937',
   },
+  helperText: {
+    fontSize: width * 0.03,
+    color: '#6B7280',
+    textAlign: 'right',
+    marginTop: 3,
+  },
   updateButton: {
     backgroundColor: 'rgba(191, 191, 191, 0.85)',
     paddingVertical: height * 0.02,
     borderRadius: 10,
     width: width * 0.45,
     marginTop: height * 0.02,
-    marginLeft: width * 0.25,
+    alignSelf: 'center',
   },
   updateButtonText: {
     color: '#20432E',
     fontSize: width * 0.045,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  cancelButton: {
+    paddingVertical: height * 0.015,
+    borderRadius: 10,
+    width: width * 0.45,
+    marginTop: height * 0.02,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  cancelButtonText: {
+    color: '#374151',
+    fontSize: width * 0.04,
     textAlign: 'center',
   },
   disabledButton: {
@@ -407,4 +519,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UpdateProfileScreen;
+export default EditProfile;

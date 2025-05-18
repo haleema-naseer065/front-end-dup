@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import HeaderComponent from '../components/header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // for storing JWT
 
 type RegisteredUserScreen = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -13,48 +14,91 @@ const { width, height } = Dimensions.get('window');
 interface User {
   id: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
+  role: string;
 }
 
 const RegisteredUsersScreen = () => {
   const navigation = useNavigation<RegisteredUserScreen>();
-  // Sample data
-  const [users, setUsers] = useState<User[]>([
-    { id: '1', name: 'محمد اکرم', phone: '03245678976' },
-    { id: '2', name: 'محمد اسلام', phone: '03245678978' },
-    { id: '3', name: 'محمد عامر', phone: '03245678967' },
-    { id: '4', name: 'محمد عاصف', phone: '03245678983' },
-    { id: '5', name: 'محمد سلمان', phone: '03456789823' },
-  
-  ]);
+  const [users, setUsers] = useState<User[]>([]);
 
-  // Function to handle user deletion
-  const deleteUser = (userId: string) => {
-    setUsers(users.filter(user => user.id !== userId));
+  const fetchUsers = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token'); // or get from context
+      const response = await fetch('https://web-production-f3500.up.railway.app/users/view/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      const data = await response.json();
+      if (response.ok && data.users) {
+        const formatted = data.users.map((u: any, index: number) => ({
+          id: (index + 1).toString(),
+          name: u.name,
+          phoneNumber: u.phoneNumber,
+          role: u.role
+        }));
+        setUsers(formatted);
+      } else {
+        console.error('Error:', data.error);
+      }
+    } catch (error) {
+      console.error('Fetch users error:', error);
+    }
   };
 
-  // Confirmation Alert
-  const confirmDelete = (userId: string) => {
+  const deleteUser = async (phoneNumber: string) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('https://web-production-f3500.up.railway.app/users/delete/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ target_phone: phoneNumber }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setUsers(users.filter(user => user.phoneNumber !== phoneNumber));
+      } else {
+        Alert.alert('Error', data.error || 'Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      Alert.alert('Error', 'Something went wrong');
+    }
+  };
+
+  const confirmDelete = (phoneNumber: string) => {
     Alert.alert(
       'کیا آپ واقعی ڈیلیٹ کرنا چاہتے ہیں؟',
       '',
       [
         { text: 'نہیں', style: 'cancel' },
-        { text: 'جی ہاں', onPress: () => deleteUser(userId) },
+        { text: 'جی ہاں', onPress: () => deleteUser(phoneNumber) },
       ]
     );
   };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   const renderItem = ({ item }: { item: User }) => (
-  <View style={styles.row}>
-    <Text style={[styles.cell, styles.id]}>{item.id}</Text>
-    <Text style={[styles.cell, styles.name]}>{item.name}</Text>
-    <Text style={[styles.cell, styles.phone]}>{item.phone}</Text>
-    <TouchableOpacity onPress={() => confirmDelete(item.id)} style={[styles.cell, styles.iconContainer]}>
-      <MaterialIcons name="delete" size={24} color="#C4C4C4" />
-    </TouchableOpacity>
-  </View>
-);
+    <View style={styles.row}>
+      <Text style={[styles.cell, styles.id]}>{item.id}</Text>
+      <Text style={[styles.cell, styles.name]}>{item.name}</Text>
+      <Text style={[styles.cell, styles.phone]}>{item.phoneNumber}</Text>
+      <TouchableOpacity onPress={() => confirmDelete(item.phoneNumber)} style={[styles.cell, styles.iconContainer]}>
+        <MaterialIcons name="delete" size={24} color="#C4C4C4" />
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     
@@ -100,6 +144,7 @@ const RegisteredUsersScreen = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

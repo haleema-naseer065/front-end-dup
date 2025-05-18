@@ -137,7 +137,7 @@ const StackNavigator = () => {
           <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity1" component={UsersActivity1} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity2" component={UsersActivity2} options={{ headerShown: false }} />
-          <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+          
         </>
       )}
 
@@ -161,6 +161,7 @@ const StackNavigator = () => {
       <Stack.Screen name="FertilizersRecommendation" component={FertilizersRecommendation} options={{ headerShown: false }} />
       <Stack.Screen name="ResultsScreen" component={ResultsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ViewHistoryActivity" component={ViewHistoryActivity} options={{ headerShown: false }} />
+      <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
