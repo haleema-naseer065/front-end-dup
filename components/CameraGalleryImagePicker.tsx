@@ -1,12 +1,18 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 
+export interface IImageSend {
+  uri:string,
+  fileName:string,
+  type:string
+}
 interface CameraGalleryPickerHookProps {
-  onImagePicked: (uri: string) => void;
+  onImagePicked: (uri:string) => void;
   navigation: any;
+  maizeType:number
 }
 
-const useCameraGalleryPicker = ({ onImagePicked, navigation }: CameraGalleryPickerHookProps) => {
+const useCameraGalleryPicker = ({ onImagePicked, navigation, maizeType }: CameraGalleryPickerHookProps) => {
   // Function for opening the camera
   const openCamera = async () => {
     const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
@@ -23,8 +29,12 @@ const useCameraGalleryPicker = ({ onImagePicked, navigation }: CameraGalleryPick
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      onImagePicked(result.assets[0].uri);
-      navigation.navigate('ProcessingScreen');  // Navigate to ProcessingScreen
+      onImagePicked(result.assets[0]?.uri );
+      navigation.navigate('ProcessingScreen',{uri:result.assets[0]?.uri ,
+        fileName:result.assets[0]?.fileName,
+        type:result?.assets[0]?.type,
+        maizeType:maizeType}
+      );    
     } else {
       Alert.alert("تصویر کے بغیر کیمرہ بند کیا گیا۔");
     }
@@ -45,8 +55,12 @@ const useCameraGalleryPicker = ({ onImagePicked, navigation }: CameraGalleryPick
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      onImagePicked(result.assets[0].uri);
-      navigation.navigate('ProcessingScreen');  // Navigate to ProcessingScreen
+      onImagePicked(result.assets[0]?.uri);
+        navigation.navigate('ProcessingScreen',{uri:result.assets[0]?.uri ,
+          fileName:result.assets[0]?.fileName,
+          type:result?.assets[0]?.type,
+          maizeType:maizeType}
+      );  // Navigate to ProcessingScreen
     } else {
       Alert.alert("آپ نے کوئی تصویر منتخب نہیں کی۔");
     }
