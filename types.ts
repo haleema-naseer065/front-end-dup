@@ -7,13 +7,18 @@ export type RootStackParamList = {
     StartLogin:undefined;
     MaizeTypes: undefined; // No params for MaizeTypes screen
     HistoryDetails: undefined;
-    imageselection: undefined;
+    imageselection: {crop_id: 0 | 1};
     splashscreen: undefined;
     ImageCropper: undefined;
     LandingScreenAfterSplash: undefined;
     BackgroundandLogo: undefined;
     BottomTabNavigator:undefined;
-    ProcessingScreen: undefined;
+    ProcessingScreen: {
+      uri:string,
+      fileName:string,
+      type:string,
+      maizeType: number
+    };
     FertilizersRecommendation: undefined;
     NitrogenDetail: undefined;
     ViewResults: undefined;

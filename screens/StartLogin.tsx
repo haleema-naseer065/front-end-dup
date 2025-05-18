@@ -91,7 +91,7 @@ const LoginScreen = () => {
       };
     
       const response:any = await axios.post(
-        "https://web-production-d02c.up.railway.app/api/sign-in",
+        'https://web-production-d02c.up.railway.app/api/sign-in',
         payload
       );
   
@@ -99,7 +99,7 @@ const LoginScreen = () => {
       store.dispatch(login({token:response?.data?.token}))
       navigation.replace("AdminorUserScreen");
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error("Login error:", error?.response?.data);
       Alert.alert("لاگ ان ناکام۔ براہ کرم فون نمبر اور پن دوبارہ چیک کریں۔");
     }
   };

@@ -1,75 +1,57 @@
-
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
   Dimensions,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+  KeyboardAvoidingView,
+} from 'react-native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import Card from "../components/Card";
-// import { signInWithPhoneNumber } from "firebase/auth";
-// import auth from '@react-native-firebase/auth';
 
-type SignupStartScreenProp = StackNavigationProp<RootStackParamList, "Home">;
+const { width, height } = Dimensions.get('window');
 
-const { width, height } = Dimensions.get("window");
+type SignupVerify = StackNavigationProp<RootStackParamList, 'Home'>;
+type SignupVerifyRouteProp = RouteProp<RootStackParamList, 'SignupVerify'>;
 
 const SignupStartScreen = () => {
-  const navigation = useNavigation<SignupStartScreenProp>();
-  const recaptchaVerifier = useRef(null);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [confirmation, setConfirmation] = useState<any>(null);
+  const recaptchaVerifier = useRef(null);
+  const navigation = useNavigation<SignupVerify>();
 
   const handlePhoneChange = (text: string) => {
-    const numericText = text.replace(/[^0-9]/g, "");
-    if (numericText.length === 1 && numericText !== "3") return;
+    const numericText = text.replace(/[^0-9]/g, '');
+    if (numericText.length === 1 && numericText !== '3') return;
     if (numericText.length <= 10) setPhoneNumber(numericText);
   };
 
-    
-const sendOTP = async () => {
-  // 1. Validate the entered digits
-  if (phoneNumber.length < 10) {
-    alert("براہ کرم درست فون نمبر درج کریں۔");
-    return;
-  }
+  const sendOTP = async () => {
+    if (phoneNumber.length < 10) {
+      alert('براہ کرم درست فون نمبر درج کریں۔');
+      return;
+    }
 
-  const fullPhone = `+92${phoneNumber}`;
+    const fullPhone = `+92${phoneNumber}`;
 
-  try {
-    // 2. Trigger the native phone‐auth SMS
-    // const confirmationResult = await auth().signInWithPhoneNumber(fullPhone);
+    try {
 
-    // 3. Store the confirmation object
-    // setConfirmation(confirmationResult);
-
-    // 4. Inform the user
-    alert("تصدیقی کوڈ ایس ایم ایس کے ذریعے بھیج دیا گیا ہے۔");
-
-    // 5. Navigate to the verification screen
-    navigation.navigate("SignupVerify", {
-      confirmation: '',
-      phoneNumber: fullPhone,
-    });
-  } catch (error: any) {
-    console.error("OTP Error:", error);
-    alert("ایس ایم ایس بھیجنے میں ناکامی۔ براہ کرم نمبر چیک کریں۔");
-  }
-};
-
+    navigation.navigate('SignupPin', {
+      phoneNumber: fullPhone, 
+    })
+    } catch (error) {
+      console.error('Error sending verification code:', error);
+      alert('ایس ایم ایس بھیجنے میں ناکامی۔ براہ کرم نمبر چیک کریں۔');
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      {/* <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={auth.app.options}
-      /> */}
+ 
       <Text style={styles.headerText}>نیا اکاؤنٹ بنائیں</Text>
       <Card
         height={280}
