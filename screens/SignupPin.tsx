@@ -99,7 +99,7 @@ const SignupPin = () => {
                 alert('براہ کرم مکمل پن درج کریں۔');
                 return;
               }
-              navigation.navigate('SignupName',{
+              navigation.navigate('ConfirmPin',{
                 phoneNumber: phoneNumber,
                 pin: pin.join(''),
               });

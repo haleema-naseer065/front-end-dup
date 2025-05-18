@@ -23,7 +23,8 @@ export type RootStackParamList = {
     NitrogenDetail: undefined;
     ViewResults: undefined;
     SignupVerify: { confirmation: any; phoneNumber: string };
-    SignupName:{phoneNumber:string,pin:string};
+    ConfirmPin: { phoneNumber: string; pin: string }; // confirmation
+    SignupName: { phoneNumber: string; pin: string;confirmPin: string};
     SignupPin:{phoneNumber:string};
     Results: undefined;
     ResultsScreen:undefined,

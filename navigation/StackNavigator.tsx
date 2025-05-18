@@ -10,6 +10,7 @@ import imageselection from '../screens/imageselection';
 import LandingScreenAfterSplash from '../screens/LandingScreenAfterSplash';
 import StartSignup from '../screens/StartSignup';
 import StartLogin from '../screens/StartLogin';
+import ConfirmPin from '../screens/ConfirmPin';
 import BottomTabNavigator from '../navigation/BottomTabNavigator';
 import NitrogenDetail from '../screens/NitrogenDetail';
 import ProcessingScreen from '../screens/ProcessingScreen';
@@ -43,6 +44,7 @@ const StackNavigator = () => {
           <Stack.Screen name="StartSignup" component={StartSignup} options={{ headerShown: false }} />
           <Stack.Screen name="SignupVerify" component={SignupVerify} options={{ headerShown: false }} />
           <Stack.Screen name="SignupPin" component={SignupPin} options={{ headerShown: false }} />
+           <Stack.Screen name="ConfirmPin" component={ConfirmPin} options={{ headerShown: false }} />
           <Stack.Screen name="SignupName" component={SignupName} options={{ headerShown: false }} />
           <Stack.Screen name="StartLogin" component={StartLogin} options={{ headerShown: false }} />
         </>

@@ -25,7 +25,7 @@ const { width, height } = Dimensions.get('window');
 
 const SignupName = () => {
   const route = useRoute<RouteProp<RootStackParamList,'SignupName'>>(); 
-  const { phoneNumber, pin } = route.params; 
+  const { phoneNumber, pin,confirmPin } = route.params; 
   const navigation = useNavigation<SignupNameNavigationProp>();
   const [name, setName] = useState('');
 
@@ -39,6 +39,7 @@ const SignupName = () => {
       const response = await axios.post("https://web-production-d02c.up.railway.app/api/sign-up", {
         phoneNumber: phoneNumber,
         pin: pin,
+        confirmPin,
         name: name,
       });
   
