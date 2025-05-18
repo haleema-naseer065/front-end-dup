@@ -12,7 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import Card from '../components/Card';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -22,8 +22,6 @@ type SignupPin = StackNavigationProp<RootStackParamList, 'Home'>;
 const { width, height } = Dimensions.get('window');
 
 const SignupPin = () => {
-  const route = useRoute<RouteProp<RootStackParamList, 'SignupPin'>>();
-  const { phoneNumber } = route.params;
   const navigation = useNavigation<SignupPin>();
   const [pin, setPin] = useState(['', '', '', '']);
   const [showPin, setShowPin] = useState(false);
@@ -79,7 +77,9 @@ const SignupPin = () => {
               <TextInput
                 key={index}
                 ref={(ref) => {
-                                inputs.current[index] = ref;
+                               if (ref) {
+                                          inputs.current[index] = ref;
+                                        }
                               }}
                 style={styles.pinInput}
                 maxLength={1}
@@ -101,10 +101,7 @@ const SignupPin = () => {
                 alert('براہ کرم مکمل پن درج کریں۔');
                 return;
               }
-              navigation.navigate('SignupName',{
-                phoneNumber: phoneNumber,
-                pin: pin.join(''),
-              });
+              navigation.navigate('SignupConfirmPin');
             }}
           >
             <Text style={styles.submitButtonText}>→</Text>
