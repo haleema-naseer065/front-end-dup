@@ -18,6 +18,7 @@ import ViewResults from '../screens/ViewResults';
 import ResultsScreen from '../screens/ResultsScreen';
 import SignupVerify from '../screens/SignupVerify';
 import SignupPin from '../screens/SignupPin';
+import SignupConfirmPin from '../screens/SignupConfirmPin';
 import SignupName from '../screens/SignupName';
 import EditProfile from '../screens/EditProfile';
 //import AdminorUserScreen from '../screens/AdminorUserScreen';
@@ -38,6 +39,7 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="LandingScreenAfterSplash">
       <Stack.Screen name='LandingScreenAfterSplash' component={!isAuthenticated?LandingScreenAfterSplash: user?.userData?.role ==='admin' ? AdminScreen:HomeScreen} options={{ headerShown: false }}/>
+
       
       {!isAuthenticated && (
         <>
@@ -46,6 +48,7 @@ const StackNavigator = () => {
           <Stack.Screen name="StartSignup" component={StartSignup} options={{ headerShown: false }} />
           <Stack.Screen name="SignupVerify" component={SignupVerify} options={{ headerShown: false }} />
           <Stack.Screen name="SignupPin" component={SignupPin} options={{ headerShown: false }} />
+          <Stack.Screen name="SignupConfirmPin" component={SignupConfirmPin} options={{ headerShown: false }} />
           <Stack.Screen name="SignupName" component={SignupName} options={{ headerShown: false }} />
           <Stack.Screen name="StartLogin" component={StartLogin} options={{ headerShown: false }} />
         </>
@@ -53,15 +56,16 @@ const StackNavigator = () => {
 
       {isAuthenticated && (
         <>
-        <Stack.Screen name="Home" component={HomeScreen} />
-<Stack.Screen name="AdminScreen" component={AdminScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="AdminScreen" component={AdminScreen} />
 
           
           <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity1" component={UsersActivity1} options={{ headerShown: false }} />
           <Stack.Screen name="UsersActivity2" component={UsersActivity2} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-          <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+          
       <Stack.Screen name="Tutorial" component={TutorialScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
       <Stack.Screen name="MaizeTypes" component={MaizeTypes} options={{ headerShown: false }} />
