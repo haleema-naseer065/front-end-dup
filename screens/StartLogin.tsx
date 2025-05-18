@@ -20,6 +20,7 @@ import { RootStackParamList } from "../types";
 import axios from "axios";
 import { store } from "../redux/store";
 import { login } from "../redux/slice/userSlice";
+import { jwtDecode } from "jwt-decode";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
@@ -77,32 +78,46 @@ const LoginScreen = () => {
     }
   };
 
-  const handleLogin = async () => {
-    // First, validate PIN
-    if (pin.some((digit) => digit === "")) {
-      Alert.alert("براہ کرم 4 ہندسوں کا پن کوڈ درج کریں۔");
-      return;
+const handleLogin = async () => {
+  if (pin.some((digit) => digit === "")) {
+    Alert.alert("براہ کرم 4 ہندسوں کا پن کوڈ درج کریں۔");
+    return;
+  }
+
+  try {
+    const payload = {
+      phoneNumber: "+92" + phoneNumber,
+      pin: pin.join(''),
+    };
+
+    const response: any = await axios.post(
+      'https://web-production-d02c.up.railway.app/api/sign-in',
+      payload
+    );
+
+    const token = response?.data?.token;
+    console.log("Login successful:", token);
+
+    const decoded: any = jwtDecode(token);
+    console.log("Decoded JWT:", decoded);
+
+    console.log("User ID:", decoded?.id);
+    console.log("Role:", decoded?.role);
+
+    store.dispatch(login({ token, role:decoded?.role  }))
+
+    if(decoded?.role ==='admin'){
+      navigation.replace("AdminScreen")
+    }else{
+      navigation.replace("BottomTabNavigator")
     }
-  
-    try {
-      const payload = {
-        phoneNumber: "+92" + phoneNumber,
-        pin: pin.join(''),
-      };
-    
-      const response:any = await axios.post(
-        'https://web-production-d02c.up.railway.app/api/sign-in',
-        payload
-      );
-  
-      console.log("Login successful:", response.data);
-      store.dispatch(login({token:response?.data?.token}))
-      navigation.replace("AdminorUserScreen");
-    } catch (error: any) {
-      console.error("Login error:", error?.response?.data);
-      Alert.alert("لاگ ان ناکام۔ براہ کرم فون نمبر اور پن دوبارہ چیک کریں۔");
-    }
-  };
+
+  } catch (error: any) {
+    console.error("Login error:", error?.response?.data);
+    Alert.alert("لاگ ان ناکام۔ براہ کرم فون نمبر اور پن دوبارہ چیک کریں۔");
+  }
+};
+
   
 
   const dismissKeyboard = () => {

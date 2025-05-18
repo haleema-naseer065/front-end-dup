@@ -7,12 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-type AdminScreen = StackNavigationProp<RootStackParamList, 'Home'>;
+type IAdminScreen = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const { width, height } = Dimensions.get('window');
 
 const AdminScreen = () => {
-  const navigation = useNavigation<AdminScreen>();
+  const navigation = useNavigation<IAdminScreen>();
   return (
     <View style={styles.container}>
       {/* Background and Logo */}

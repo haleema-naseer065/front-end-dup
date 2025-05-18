@@ -4,6 +4,7 @@ interface AuthState {
   isAuthenticated: boolean;
   user: {
     token: string;
+    role: string;
   } | null;
 }
 
@@ -16,9 +17,9 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state, action: PayloadAction<{ token:string }>) {
+    login(state, action: PayloadAction<{ token:string; role:string }>) {
       state.isAuthenticated = true;
-      state.user = { token: action.payload.token };
+      state.user = { token: action.payload.token , role:action.payload.role };
     },
     logout(state) {
       state.isAuthenticated = false;
