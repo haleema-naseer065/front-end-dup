@@ -1,24 +1,28 @@
 
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute,RouteProp } from '@react-navigation/native';
 import HeaderComponent from '../components/header';
 import NitroTrackContainer from '../components/NitrotrackandCornImage';
 import CameraGalleryPickerLogic from '../components/CameraGalleryImagePicker';  // Import logic component
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 
-type ImageSelectionNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type ImageSelectionNavigationProp = StackNavigationProp<RootStackParamList, 'imageselection'>;
 
 const { width, height } = Dimensions.get('window'); // Get screen dimensions
 
 const NitrogenEstimationScreen = () => {
   const navigation = useNavigation<ImageSelectionNavigationProp>();
-
+  const {params} = useRoute<RouteProp<RootStackParamList, 'imageselection'>>();
+  const {crop_id} = params
   // Get the image picking logic
   const { openCamera, openGallery } = CameraGalleryPickerLogic({
-    onImagePicked: (uri: string) => {},
+    onImagePicked: (uri: string) => {
+      console.log('uri',uri)
+    },
     navigation,
+    maizeType:crop_id
   });
  
   return (
