@@ -45,9 +45,9 @@ const AdminScreen = () => {
           <Text style={styles.buttonText}>رجسٹرڈ یوزرز کی تفصیل</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UsersActivity1')}>
+        {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UsersActivity1')}>
           <Text style={styles.buttonText}>یوزرز کی ایکٹیویٹی</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* <TouchableOpacity style={styles.button} onPress={() => console.log('Delete User pressed')}>
           <Text style={styles.buttonText}>یوزر کو ڈیلیٹ کریں</Text>
