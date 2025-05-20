@@ -77,7 +77,7 @@ const SignupStartScreen = () => {
           </View>
           <TouchableOpacity style={styles.verifyButton} onPress={sendOTP}>
             <Text style={styles.verifyButtonText}>
-              تصدیقی کوڈ ایس ایم ایس کے ذریعے بھیجیں
+              پن کوڈ سیٹ کریں
             </Text>
           </TouchableOpacity>
         </View>
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
   },
   verifyButton: {
     backgroundColor: "#3A5F47",
-    paddingVertical: height * 0.009,
-    paddingHorizontal: height * 0.009,
+    paddingVertical: height * 0.020,
+    paddingHorizontal: height * 0.020,
     borderRadius: height * 0.05,
     width: "65%",
     alignItems: "center",
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   verifyButtonText: {
     color: "#FFFFFF",
-    fontSize: width * 0.035,
+    fontSize: width * 0.040,
     fontWeight: "500",
     textAlign: "center",
   },
