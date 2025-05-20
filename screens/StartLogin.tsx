@@ -185,7 +185,7 @@ const handleLogin = async () => {
             </View>
           </View>
 
-          <Text style={styles.resetpin}>پن کوڈ دوبارہ سیٹ کریں</Text>
+          {/* <Text style={styles.resetpin}>پن کوڈ دوبارہ سیٹ کریں</Text> */}
 
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>لاگ ان</Text>
