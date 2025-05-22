@@ -1,29 +1,29 @@
 {
   "expo": {
-    "name": "Frontend2",
-    "slug": "Frontend2",
+    "name": "NitroTrack",
+    "slug": "nitrotrack",
     "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/adaptive-icon.png",
+      "image": "./assets/images/cornlogo.jpeg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.haleema065.Frontend2",
+      "bundleIdentifier": "com.haleema065.nitrotrack",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/android_adaptive_foreground.png",
+        "foregroundImage": "./assets/images/cornlogo.jpeg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.haleema065.Frontend2",
+      "package": "com.haleema065.nitrotrack",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",

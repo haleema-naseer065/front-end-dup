@@ -2,10 +2,14 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 import BackgroundAndLogo from '../components/BackgroundandLogo';
 import HeaderComponent from '../components/header'; // Import HeaderComponent
 import { RootStackParamList } from '../types';
+import { store } from '../redux/store';
+import { logout } from '../redux/slice/userSlice';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -19,9 +23,21 @@ const HomeScreen = () => {
     navigation.navigate('MaizeTypes');
   };
 
-  // const handleViewHistory = () => {
-  //   navigation.navigate('HistoryDetails');
-  // };
+  const handleViewHistory = () => {
+    navigation.navigate('HistoryDetails');
+  };
+  const handleLogout = () => {
+    // Dispatch logout action to clear user state
+    store.dispatch(logout());
+    
+    // Reset navigation stack completely
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'StartLogin' }],
+      })
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -29,9 +45,8 @@ const HomeScreen = () => {
       <HeaderComponent
   rightIcons={[
     { name: 'person', onPress: () => navigation.navigate('EditProfile') },
-    { name: 'volume-up', onPress: () => console.log('Volume pressed') },
-    { name: 'exit-to-app', onPress: () => navigation.navigate('StartLogin') },
-  ]}
+    // { name: 'volume-up', onPress: () => console.log('Volume pressed') },
+    { name: 'exit-to-app', onPress: handleLogout },  ]}
   leftIcons={[
     // { name: 'arrow-back', onPress: () => navigation.goBack() },
   ]}

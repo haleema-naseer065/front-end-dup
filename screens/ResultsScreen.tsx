@@ -22,14 +22,15 @@ const ResultScreen = () => {
   } = route.params;
 
   const isTooHigh = spad_index > 95;
-const format = (value: number | undefined) => 
-  typeof value === 'number' ? value.toFixed(2) : '0.00';
+  const format = (value: number | undefined) => 
+    typeof value === 'number' ? value.toFixed(2) : '0.00';
 
   console.log('spad',spad_index)
+  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.headerTitle}>Nitrogen App (نائٹروجن ایپ)</Text>
+        {/* <Text style={styles.headerTitle}>Nitrogen App (نائٹروجن ایپ)</Text> */}
 
         {isTooHigh ? (
           <Text style={styles.mainHeading}>{message}</Text>
@@ -37,35 +38,66 @@ const format = (value: number | undefined) =>
           <>
             <Text style={styles.mainHeading}>تصویر اور نتائج درج ذیل ہیں</Text>
 
-            <View style={styles.resultContainer}>
-              <View style={styles.metricsContainer}>
-                <Text style={styles.metric}>SPAD Index: {spad_index}</Text>
-                <Text style={styles.metric}>
-                  نائٹروجن درکار: {nitrogen_required_kg_per_acre} کلوگرام فی ایکڑ
-                </Text>
-              </View>
-
+            {/* Center Image Section */}
+            <View style={styles.imageContainer}>
               <Image
                 source={{ uri: `data:image/jpeg;base64,${test_leaf_segmented}` }}
                 style={styles.cropImage}
               />
             </View>
 
-            <View style={styles.fertilizerSection}>
-              <Text style={styles.fertilizerHeading}>
-                آپ اپنی گندم کی فصل کو مندرجہ ذیل کھادوں میں سے کوئی بھی کھاد ڈال سکتے ہیں
-              </Text>
-
-              <Text style={styles.fertilizerDetails}>
-                {`یوریا ${urea_kg.toFixed(2)} کلوگرام فی ایکڑ    یا\n`}
-                {`ایمونیم سلفیٹ ${ammonium_sulphate_kg.toFixed(2)} کلوگرام فی ایکڑ    یا\n`}
-                {`کیلشیم ایمونیم نائٹریٹ ${CAN_kg.toFixed(2)} کلوگرام فی ایکڑ`}
-              </Text>
+            {/* SPAD and Nitrogen Results Card */}
+            <View style={styles.resultsCard}>
+              <Text style={styles.cardTitle}>تجزیہ کے نتائج</Text>
+              <View style={styles.resultRow}>
+                <Text style={styles.resultLabel}>SPAD Index:</Text>
+                <Text style={styles.resultValue}>{spad_index}</Text>
+              </View>
+              <View style={styles.resultRow}>
+                <Text style={styles.resultLabel}>نائٹروجن درکار:</Text>
+                <Text style={styles.resultValue}>{nitrogen_required_kg_per_acre} کلوگرام فی ایکڑ</Text>
+              </View>
             </View>
 
-            <Text style={styles.nextCheckText}>
-              اپنی فصل کا چند دن بعد نائٹروجن ایپ سے دوبارہ معائنہ کریں اور کھاد کی اگلی قسط ڈالیں۔
-            </Text>
+            {/* Fertilizer Recommendations Section */}
+            <View style={styles.fertilizerCard}>
+              <Text style={styles.cardTitle}>کھاد کی سفارشات</Text>
+              <Text style={styles.fertilizerSubheading}>
+                آپ اپنی گندم کی فصل کو مندرجہ ذیل کھادوں میں سے کوئی بھی کھاد ڈال سکتے ہیں:
+              </Text>
+
+              <View style={styles.fertilizerOption}>
+                <View style={styles.fertilizerHeader}>
+                  <Text style={styles.fertilizerName}>یوریا</Text>
+                  <Text style={styles.fertilizerAmount}>{urea_kg.toFixed(2)} کلوگرام فی ایکڑ</Text>
+                </View>
+              </View>
+
+              <View style={styles.fertilizerDivider} />
+
+              <View style={styles.fertilizerOption}>
+                <View style={styles.fertilizerHeader}>
+                  <Text style={styles.fertilizerName}>ایمونیم سلفیٹ</Text>
+                  <Text style={styles.fertilizerAmount}>{ammonium_sulphate_kg.toFixed(2)} کلوگرام فی ایکڑ</Text>
+                </View>
+              </View>
+
+              <View style={styles.fertilizerDivider} />
+
+              <View style={styles.fertilizerOption}>
+                <View style={styles.fertilizerHeader}>
+                  <Text style={styles.fertilizerName} >کیلشیم ایمونیم نائٹریٹ</Text>
+                  <Text style={styles.fertilizerAmount}>{CAN_kg.toFixed(2)} کلوگرام فی ایکڑ</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Important Note */}
+            <View style={styles.noteCard}>
+              <Text style={styles.noteText}>
+                اپنی فصل کا چند دن بعد نائٹروجن ایپ سے دوبارہ معائنہ کریں اور کھاد کی اگلی قسط ڈالیں۔
+              </Text>
+            </View>
           </>
         )}
 
@@ -81,73 +113,186 @@ const format = (value: number | undefined) =>
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  scrollContent: { padding: 16 },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f5f5f5' 
+  },
+  scrollContent: { 
+    padding: 16 
+  },
   headerTitle: {
     fontSize: 24,
     color: '#2E7D32',
     textAlign: 'center',
     marginBottom: 20,
-    fontWeight: '600',
-  },
-  mainHeading: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: '#2E7D32',
-    marginBottom: 24,
     fontWeight: '700',
   },
-  resultContainer: {
+  mainHeading: {
+    fontSize: 22,
+    textAlign: 'center',
+    color:"rgba(39, 73, 47, 0.8)",
+    marginTop: 40,
+    marginBottom: 30,
+    fontWeight: '700',
+  },
+  
+  // Image Section
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  cropImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  // Results Card
+  resultsCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderLeftWidth: 4,
+    borderLeftColor: 'gray',
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: "rgba(39, 73, 47, 0.8)",
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  resultRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
-  metricsContainer: { flex: 1 },
-  metric: {
+  resultLabel: {
     fontSize: 16,
-    marginBottom: 8,
-    color: '#2E7D32',
+    color: '#333',
     fontWeight: '600',
+    flex: 1,
   },
-  cropImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 8,
-    marginLeft: 10,
-  },
-  fertilizerSection: { marginBottom: 24 },
-  fertilizerHeading: {
-    fontSize: 20,
-    textAlign: 'right',
-    color: '#000',
-    marginBottom: 16,
+  resultValue: {
+    fontSize: 16,
+    color: 'black',
     fontWeight: '700',
-  },
-  fertilizerDetails: {
-    fontSize: 18,
     textAlign: 'right',
-    color: '#2E7D32',
-    lineHeight: 28,
+    flex: 1,
   },
-  nextCheckText: {
-    fontSize: 18,
+
+  // Fertilizer Card
+  fertilizerCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderLeftWidth: 4,
+    borderLeftColor: 'gray',
+  },
+  fertilizerSubheading: {
+    fontSize: 16,
     textAlign: 'right',
-    color: 'red',
-    marginBottom: 32,
+    color: '#666',
+    marginBottom: 16,
+    lineHeight: 24,
+  },
+  fertilizerOption: {
+    paddingVertical: 12,
+  },
+  fertilizerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  fertilizerName: {
+    fontSize: 18,
     fontWeight: '600',
+    color: '#2E7D32',
+    flex: 1,
+    textAlign: 'right',
   },
+  fertilizerAmount: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: 'black',
+    flex: 1,
+    textAlign: 'left',
+  },
+  fertilizerDivider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 8,
+  },
+
+  // Note Card
+  noteCard: {
+    backgroundColor: '#fff3cd',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    borderLeftWidth: 4,
+    borderLeftColor: '#ff6b35',
+  },
+  noteText: {
+    fontSize: 16,
+    textAlign: 'right',
+    color: '#856404',
+    fontWeight: '600',
+    lineHeight: 24,
+  },
+
+  // Restart Button
   restartButton: {
-    backgroundColor: '#8FBC8B',
+    backgroundColor: "rgba(39, 73, 47, 0.8)",
     borderRadius: 25,
     padding: 16,
+    paddingHorizontal:9,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 60,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   restartButtonText: {
     color: 'white',
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '700',
   },
 });
 

@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   //   left: width * 0.05,
   // },
   inputContainer: {
-    marginTop: width *0.01,
+    marginTop: width *0.05,
     width: "100%",
   },
   inputRow: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     paddingVertical: height * 0.01, // Responsive padding
     paddingHorizontal: width * 0.05, // Responsive padding
     borderRadius: width * 0.04, // Responsive border radius
-    marginTop: height * 0.02, // Responsive margin
+    marginTop: height * -0.02, // Responsive margin
     width: "60%",
     alignItems: "center",
     alignSelf: "center",

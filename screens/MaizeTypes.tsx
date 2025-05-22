@@ -145,15 +145,18 @@
 
 
 // MaizeTypes.tsx
+// MaizeTypes.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import HeaderComponent from '../components/header';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
-import NitroTrackContainer from '../components/NitrotrackandCornImage'; // Import the new component
+import NitroTrackContainer from '../components/NitrotrackandCornImage';
 import { store } from '../redux/store';
 import { logout } from '../redux/slice/userSlice';
+import { CommonActions } from '@react-navigation/native';
+
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -161,15 +164,28 @@ const { width, height } = Dimensions.get('window');
 
 const MaizeTypes = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const handleLogout = () => {
+    // Dispatch logout action to clear user state
+    store.dispatch(logout());
+    
+    // Reset navigation stack completely
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'StartLogin' }],
+      })
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* Header Component */}
       <HeaderComponent
         rightIcons={[
           { name: 'home', onPress: () => navigation.navigate('BottomTabNavigator') },
-          { name: 'help-outline', onPress: () =>navigation.navigate('Tutorial') },
-          { name: 'volume-up', onPress: () => console.log('Volume pressed') },
-          { name: 'exit-to-app', onPress: () => { store.dispatch(logout())} },
+          { name: 'help-outline', onPress: () => navigation.navigate('Tutorial') },
+          { name: 'exit-to-app', onPress: handleLogout },
         ]}
         leftIcons={[
           { name: 'arrow-back', onPress: () => navigation.goBack() },
@@ -184,7 +200,6 @@ const MaizeTypes = () => {
  
       {/* Buttons */}
        <View style={styles.buttonContainer}>
-       
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('imageselection',{crop_id:0})}

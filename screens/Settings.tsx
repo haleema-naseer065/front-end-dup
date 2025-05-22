@@ -27,10 +27,10 @@ const SettingsScreenUrdu = () => {
           <Ionicons name="person-outline" size={20} color="#555" style={styles.optionIcon} />
           <Text style={styles.optionText}>اپنے اکاؤنٹ کی معلومات تبدیل کریں</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate("Tutorial")}>
-          <Ionicons name="call-outline" size={20} color="#555" style={styles.optionIcon} />
-          <Text style={styles.optionText}>ہیلپ لائن پر کال کریں</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.option} onPress={() => navigation.navigate("Tutorial")}> */}
+          {/* <Ionicons name="call-outline" size={20} color="#555" style={styles.optionIcon} /> */}
+          {/* <Text style={styles.optionText}>ہیلپ لائن پر کال کریں</Text> */}
+        {/* </TouchableOpacity> */}
         <TouchableOpacity style={styles.option} onPress={() => navigation.navigate("Tutorial")}>
           <Ionicons name="help-circle-outline" size={20} color="#555" style={styles.optionIcon} />
           <Text style={styles.optionText}>ایپ سے متعلق مدد حاصل کریں</Text>

@@ -24,7 +24,7 @@ const TutorialScreen = () => {
             </Text>
           </View>
           <View style={styles.videoContainer}>
-            {/* <Video
+            <Video
               ref={video}
               style={styles.video}
               source={require('../assets/videos/tutorial.mp4')}
@@ -33,7 +33,7 @@ const TutorialScreen = () => {
               isLooping
               shouldPlay={false}
               onPlaybackStatusUpdate={setStatus}
-            /> */}
+            />
           </View>
         </View>
 
@@ -70,8 +70,8 @@ const TutorialScreen = () => {
         {/* Helpline Card */}
         <View style={styles.card}>
           <Text style={styles.helplineText}>مزید معلومات کے لیے اس نمبر پر کال کریں</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(`tel:${'03328676237'}`)}>
-            <Text style={[styles.phoneNumber, styles.phoneLink]}>0332-8676237</Text>
+          <TouchableOpacity onPress={() => Linking.openURL(`tel:${'03217643828'}`)}>
+            <Text style={[styles.phoneNumber, styles.phoneLink]}>0321-7643828</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: width < 350 ? 14 : 16, // Adjust font size for smaller screens
   },
   phoneNumber: {
-    color: '#1F2937',
+    color: 'green',
     textAlign: 'right',
     marginTop: 4,
     fontSize: width < 350 ? 16 : 18, // Adjust font size for smaller screens

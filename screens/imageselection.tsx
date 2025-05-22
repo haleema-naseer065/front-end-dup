@@ -7,7 +7,9 @@ import NitroTrackContainer from '../components/NitrotrackandCornImage';
 import CameraGalleryPickerLogic from '../components/CameraGalleryImagePicker';  // Import logic component
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
-
+import { store } from '../redux/store';
+import { logout } from '../redux/slice/userSlice';
+import { CommonActions } from '@react-navigation/native';
 type ImageSelectionNavigationProp = StackNavigationProp<RootStackParamList, 'imageselection'>;
 
 const { width, height } = Dimensions.get('window'); // Get screen dimensions
@@ -25,14 +27,27 @@ const NitrogenEstimationScreen = () => {
     maizeType:crop_id
   });
  
+  
+const handleLogout = () => {
+    // Dispatch logout action to clear user state
+    store.dispatch(logout());
+    
+    // Reset navigation stack completely
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'StartLogin' }],
+      })
+    );
+  }; 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <HeaderComponent
         rightIcons={[
           { name: 'home', onPress: () => navigation.navigate('BottomTabNavigator') },
           { name: 'help-outline', onPress: () => navigation.navigate('Tutorial') },
-          { name: 'volume-up', onPress: () => navigation.navigate('Tutorial') },
-          { name: 'exit-to-app', onPress: () => navigation.navigate('StartLogin') },
+          // { name: 'volume-up', onPress: () => navigation.navigate('Tutorial') },
+          { name: 'exit-to-app', onPress: handleLogout },
         ]}
         leftIcons={[{ name: 'arrow-back', onPress: () => navigation.goBack() }]}
       />

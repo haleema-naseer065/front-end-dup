@@ -109,59 +109,52 @@ const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
 
+  // Determine initial route based on auth state
+  const initialRouteName = React.useMemo(() => {
+    if (!isAuthenticated) return 'LandingScreenAfterSplash';
+    return user?.role === 'admin' ? 'AdminScreen' : 'BottomTabNavigator';
+  }, [isAuthenticated, user?.role]);
+
   return (
     <Stack.Navigator
-      initialRouteName={
-        !isAuthenticated
-          ? 'LandingScreenAfterSplash'
-          : user?.role === 'admin'
-          ? 'AdminScreen'
-          : 'BottomTabNavigator'
-      }
+      screenOptions={{ headerShown: false }}
+      initialRouteName={initialRouteName}
     >
-      {!isAuthenticated && (
-        <>
-          <Stack.Screen name="LandingScreenAfterSplash" component={LandingScreenAfterSplash} options={{ headerShown: false }} />
-          <Stack.Screen name="StartSignup" component={StartSignup} options={{ headerShown: false }} />
-          <Stack.Screen name="SignupVerify" component={SignupVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="SignupPin" component={SignupPin} options={{ headerShown: false }} />
-          <Stack.Screen name="ConfirmPin" component={ConfirmPin} options={{ headerShown: false }} />
-          <Stack.Screen name="SignupName" component={SignupName} options={{ headerShown: false }} />
-          <Stack.Screen name="StartLogin" component={StartLogin} options={{ headerShown: false }} />
-        </>
-      )}
+      {/* All screens are always registered - no conditional rendering */}
+      
+      {/* Auth Screens */}
+      <Stack.Screen name="LandingScreenAfterSplash" component={LandingScreenAfterSplash} />
+      <Stack.Screen name="StartSignup" component={StartSignup} />
+      <Stack.Screen name="SignupVerify" component={SignupVerify} />
+      <Stack.Screen name="SignupPin" component={SignupPin} />
+      <Stack.Screen name="ConfirmPin" component={ConfirmPin} />
+      <Stack.Screen name="SignupName" component={SignupName} />
+      <Stack.Screen name="StartLogin" component={StartLogin} />
+      <Stack.Screen name="AdminorUserScreen" component={AdminorUserScreen} />
 
-      {isAuthenticated && user?.role === 'admin' && (
-        <>
-          <Stack.Screen name="AdminScreen" component={AdminScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="UsersActivity1" component={UsersActivity1} options={{ headerShown: false }} />
-          <Stack.Screen name="UsersActivity2" component={UsersActivity2} options={{ headerShown: false }} />
-          
-        </>
-      )}
+      {/* Main App Screens */}
+      <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+      
+      {/* Admin Screens */}
+      <Stack.Screen name="AdminScreen" component={AdminScreen} />
+      <Stack.Screen name="RegisteredUsersScreen" component={RegisteredUsersScreen} />
+      <Stack.Screen name="UsersActivity1" component={UsersActivity1} />
+      <Stack.Screen name="UsersActivity2" component={UsersActivity2} />
 
-      {isAuthenticated && user?.role !== 'admin' && (
-        <>
-          <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-        </>
-      )}
-
-      {/* Shared Screens */}
-      <Stack.Screen name="AdminorUserScreen" component={AdminorUserScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Tutorial" component={TutorialScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
-      <Stack.Screen name="MaizeTypes" component={MaizeTypes} options={{ headerShown: false }} />
-      <Stack.Screen name="HistoryDetails" component={HistoryDetails} options={{ headerShown: false }} />
-      <Stack.Screen name="imageselection" component={imageselection} options={{ headerShown: false }} />
-      <Stack.Screen name="ProcessingScreen" component={ProcessingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="ViewResults" component={ViewResults} options={{ headerShown: false }} />
-      <Stack.Screen name="NitrogenDetail" component={NitrogenDetail} options={{ headerShown: false }} />
-      <Stack.Screen name="FertilizersRecommendation" component={FertilizersRecommendation} options={{ headerShown: false }} />
-      <Stack.Screen name="ResultsScreen" component={ResultsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="ViewHistoryActivity" component={ViewHistoryActivity} options={{ headerShown: false }} />
-      <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+      {/* User Screens */}
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Tutorial" component={TutorialScreen} />
+      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="MaizeTypes" component={MaizeTypes} />
+      <Stack.Screen name="HistoryDetails" component={HistoryDetails} />
+      <Stack.Screen name="imageselection" component={imageselection} />
+      <Stack.Screen name="ProcessingScreen" component={ProcessingScreen} />
+      <Stack.Screen name="ViewResults" component={ViewResults} />
+      <Stack.Screen name="NitrogenDetail" component={NitrogenDetail} />
+      <Stack.Screen name="FertilizersRecommendation" component={FertilizersRecommendation} />
+      <Stack.Screen name="ResultsScreen" component={ResultsScreen} />
+      <Stack.Screen name="ViewHistoryActivity" component={ViewHistoryActivity} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 };
