@@ -27,7 +27,13 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.haleema065.Frontend2</string>
+          <string>com.Frontend2.frontend2</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>exp+frontend2</string>
         </array>
       </dict>
     </array>
