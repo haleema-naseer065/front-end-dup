@@ -1,29 +1,23 @@
 {
   "expo": {
-    "name": "NitroTrack",
-    "slug": "nitrotrack",
+    "name": "Frontend2",
+    "slug": "frontend2",
     "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/cornlogo.jpeg",
+      "image": "./assets/adaptive-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": false,
-      "bundleIdentifier": "com.haleema065.nitrotrack",
-      "googleServicesFile": "./GoogleService-Info.plist"
-    },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/cornlogo.jpeg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.haleema065.nitrotrack",
+      "package": "com.aadilamir.frontend2",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -43,8 +37,11 @@
     },
     "extra": {
       "eas": {
-        "projectId": "fb694d9b-075d-4592-b54b-1c74e5fecf8b"
+        "projectId": "860290e4-6ce2-4711-92b7-2e03888160ea"
       }
+    },
+    "ios": {
+      "bundleIdentifier": "com.Frontend2.frontend2"
     }
   }
 }
