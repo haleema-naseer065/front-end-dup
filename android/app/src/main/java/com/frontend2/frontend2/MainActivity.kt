@@ -1,4 +1,4 @@
-package com.haleema065.Frontend2
+package com.Frontend2.frontend2
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
